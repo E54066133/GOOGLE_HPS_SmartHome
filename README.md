@@ -1,5 +1,5 @@
 # GOOGLE_HPS_SmartHome
-請大家把寫好的檔案放上來，並寫 readme 說明檔案內容
+2022 Taiwan Google Hardware Sprint Team 9
 
 ## Sensor Node
-
+Through the HC-08 bluetooth module, Arduino sends sensor data like temperature, relative moisture, and light intensity to Raspberry Pi. Then, Raspberry Pi saves sensor data as txt file, and control the wireless Tapo P110 switches according to the data collected.
