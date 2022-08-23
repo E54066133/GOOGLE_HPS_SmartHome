@@ -8,3 +8,6 @@ Through the HC-08 bluetooth module, Arduino sends sensor data like temperature, 
 
 
 ## LineBot
+Through RichMenu & Postman, users can just click the menu botten to interact with our linebot sever. 
+The functions available users :
+1. Take a picture
