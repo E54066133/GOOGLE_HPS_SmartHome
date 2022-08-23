@@ -10,7 +10,7 @@ Through the HC-08 bluetooth module, Arduino sends sensor data like temperature, 
 ## LineBot
 Through RichMenu & Postman, users can just click the menu botten to interact with our linebot sever. 
 The functions available to users :
-1. Take a picture
+1. See present condition outside the door
 2. Check present temperature
 3. Check present moisture
 4. Check present light intensity
