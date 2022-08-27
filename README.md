@@ -17,3 +17,7 @@ The functions available to users :
 5. Set the smart_home settings
 
 (In addtional, some functions are implemented by regular expression)
+
+
+## Function_merged
+A program that accomplishes the function which decides to turn on(off) the wireless switch when we detect users get home.
