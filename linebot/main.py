@@ -134,14 +134,14 @@ def handle_message(event):
             #jsonFile.modify_jsonFile(event.source.user_id, 'humidity', moisture_now)
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
-    elif mtext == "@無限開關打開":
+    elif mtext == "@無線開關打開":
         try:
             #8/30 測試
             #Tapo_Function.openTapo_temp()
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 On"))
         except:
             pass
-    elif mtext == "@無限開關關閉":
+    elif mtext == "@無線開關關閉":
         try:
             #8/30 測試
             #Tapo_Function.closeTapo_temp() 
