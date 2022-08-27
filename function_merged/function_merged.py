@@ -30,8 +30,7 @@ while True:
         if person_detected in list_person:                                       # 邏輯判斷是否開啟tapo開關
             temprature_set = int(f1[person_detected]["airConditionerTemp"])
             temprature_now = int(temprature_now)
-            if temprature_now >= temprature_set :
-                if tapo_off:
+            if temprature_now >= temprature_set and tapo_off :
                     #Tapo_Function.openTapo_temp()
                     print("開啟開關")
                     tapo_off = False
