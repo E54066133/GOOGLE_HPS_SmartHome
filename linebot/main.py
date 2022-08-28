@@ -85,6 +85,8 @@ def handle_message(event):
         這邊要寫進json的東西有:
         1. 用戶設定的溫度
         '''
+        username_userID = user_name + "_" + event.source.user_id
+        jsonFile.modify_jsonFile(username_userID, 'airConditionerTemp', user_temperature)
         line_bot_api.reply_message(event.reply_token, TextSendMessage("設定完成"))
     ################################################## 確定這段要不要???
     if mtext == "@冷氣溫度":
@@ -111,6 +113,7 @@ def handle_message(event):
             f.close()
             light_now = str(light_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(light_now))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡效華 ><"))
             #jsonFile.modify_jsonFile(event.source.user_id, 'light', light_now)
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
@@ -121,6 +124,7 @@ def handle_message(event):
             f.close()
             temperature_now = str(temperature_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(temperature_now))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡效華 ><"))
             #jsonFile.modify_jsonFile(event.source.user_id, 'tem', temperature_now)
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
@@ -131,6 +135,7 @@ def handle_message(event):
             f.close()
             moisture_now = str(moisture_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(moisture_now))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡效華 ><"))
             #jsonFile.modify_jsonFile(event.source.user_id, 'humidity', moisture_now)
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
@@ -139,6 +144,7 @@ def handle_message(event):
             #8/30 測試
             #Tapo_Function.openTapo_temp()
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 On"))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("效華給我記住 ><"))
         except:
             pass
     elif mtext == "@無線開關關閉":
@@ -146,6 +152,7 @@ def handle_message(event):
             #8/30 測試
             #Tapo_Function.closeTapo_temp() 
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 Off")) 
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("效華效華效華效華效華效華效華效華"))
         except:
             pass
     elif mtext == "@幫助":
@@ -154,7 +161,7 @@ def handle_message(event):
         若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
         若照片傳送結束請打 @@結束"))
     elif mtext == "@聯絡客服":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡 Michelle"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡 效華xDDDDDDDDDDDDDDDDDDDDDDDDDD"))
       
       
     ##push message
