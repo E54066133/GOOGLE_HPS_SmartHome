@@ -19,7 +19,7 @@ import jsonFile
 import re
 from linebot.exceptions import LineBotApiError
 
-import air_conditioner_tem
+#import air_conditioner_tem
 app = Flask(__name__)
 
 
@@ -77,7 +77,6 @@ def handle_message(event):
         f_pic = open('store_path.txt', 'w+')
         f_pic.write(store_path)
         f_pic.close()
-        
         try:
             os.mkdir(store_path)
         except:
@@ -86,8 +85,6 @@ def handle_message(event):
         # 傳訊號給辨識模型(再次訓練)或是call再次訓練的function
         print("待完成")
         line_bot_api.reply_message(event.reply_token, TextSendMessage("待完成"))
-        
-            
     if str_pas:
         user_name = mtext[4:-2]         # 用戶的名字
         user_temperature = mtext[-2:]   # 用戶希望設定的溫度
@@ -97,8 +94,7 @@ def handle_message(event):
         '''
         username_userID = user_name + "_" + event.source.user_id
         jsonFile.modify_jsonFile(username_userID, 'airConditionerTemp', user_temperature)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("設定完成"))
-    
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("設定完成"))   
     elif mtext == "@查看監視器影像":
         # https://ithelp.ithome.com.tw/articles/10198142?sc=iThelpR 作法參照這個網站
         line_bot_api.reply_message(event.reply_token, TextSendMessage("此功能暫未啟用"))
@@ -119,8 +115,7 @@ def handle_message(event):
             light_now = f.readline()
             f.close()
             light_now = str(light_now)
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(light_now))
-            
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(light_now))            
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@查看溫度":
@@ -130,7 +125,6 @@ def handle_message(event):
             f.close()
             temperature_now = str(temperature_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(temperature_now))
-            
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@查看濕度":
@@ -162,7 +156,7 @@ def handle_message(event):
         若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
         若照片傳送結束請打 @@結束"))
     elif mtext == "@聯絡客服":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡許孝華xDDDDDDDDDDDDDDDDDDDDDDDDDD"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("Plz, contact Michelle XDDDDDDDDDDDDDDDDDDDDD"))
       
       
     ##push message
@@ -180,9 +174,7 @@ def handle_message(event):
 
 
 
-## 處理照片
-
-                
+## 處理照片                
 @handler.add(MessageEvent)
 def handle_message(event):
     # 這邊要測會不會成功，因為handler沒有寫type = textmessage
@@ -206,8 +198,6 @@ def handle_message(event):
 
 ###main###
 if __name__ == "__main__":
-    global store_path
-    store_path = ""
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     #app.run(debug=True)
