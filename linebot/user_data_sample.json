@@ -4,8 +4,17 @@
             "airConditionerTemp": "19"
         },
 
-    "Eric_Y23o6fc2871f5f1e5d0561vbp1963fr5": 
+    "Eric_Y23o6fc2871f5f1e5d0561vbp1963flr5": 
         {   
             "airConditionerTemp": "26"
+        },
+    "Lisa_W2d5f2s55d145fk5d6k78f6bna6h638rl":
+        {
+        "airConditionerTemp": "27"
+        }, 
+    "Sam_P56p9gh5bbd18pep069f09s6kma8l65dm":
+        {
+        "airConditionerTemp": "25"
         }
+    
 }
