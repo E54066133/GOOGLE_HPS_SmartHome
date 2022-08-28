@@ -61,16 +61,6 @@ def callback():
     return 'OK'
 
 
-##################### 確定這段要不要???
-#open air condition or not
-airConditioner_confirm = ConfirmTemplate(text="要開冷氣嗎？", actions=[
-        PostbackAction(label="Yes", data="開冷氣"),
-        PostbackAction(label="No", data="不開冷氣")
-    ])
-airConditioner_confirm_template = TemplateSendMessage(alt_text="confirm alt text", template=airConditioner_confirm)
-#######################
-
-
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -82,7 +72,6 @@ def handle_message(event):
     str_pas3 = re.search("^@@結束",mtext)
     if str_pas2:
         mtext_pic_temp = mtext.split("片")
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage("216"))
         user_id_for_pic = event.source.user_id
         store_path = mtext_pic_temp[1]+"_"+user_id_for_pic   # 測試這樣的命名能不能通過
         f_pic = open('store_path.txt', 'w+')
@@ -109,10 +98,7 @@ def handle_message(event):
         username_userID = user_name + "_" + event.source.user_id
         jsonFile.modify_jsonFile(username_userID, 'airConditionerTemp', user_temperature)
         line_bot_api.reply_message(event.reply_token, TextSendMessage("設定完成"))
-    ################################################## 確定這段要不要???
-    if mtext == "@冷氣溫度":
-        line_bot_api.reply_message(event.reply_token, airConditioner_confirm_template)
-    ################################################## 
+    
     elif mtext == "@查看監視器影像":
         # https://ithelp.ithome.com.tw/articles/10198142?sc=iThelpR 作法參照這個網站
         line_bot_api.reply_message(event.reply_token, TextSendMessage("此功能暫未啟用"))
@@ -134,8 +120,7 @@ def handle_message(event):
             f.close()
             light_now = str(light_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(light_now))
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡效華 ><"))
-            #jsonFile.modify_jsonFile(event.source.user_id, 'light', light_now)
+            
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@查看溫度":
@@ -145,8 +130,7 @@ def handle_message(event):
             f.close()
             temperature_now = str(temperature_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(temperature_now))
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡效華 ><"))
-            #jsonFile.modify_jsonFile(event.source.user_id, 'tem', temperature_now)
+            
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@查看濕度":
@@ -156,8 +140,6 @@ def handle_message(event):
             f.close()
             moisture_now = str(moisture_now)
             line_bot_api.reply_message(event.reply_token, TextSendMessage(moisture_now))
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡效華 ><"))
-            #jsonFile.modify_jsonFile(event.source.user_id, 'humidity', moisture_now)
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@無線開關打開":
@@ -165,7 +147,6 @@ def handle_message(event):
             #8/30 測試
             #Tapo_Function.openTapo_temp()
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 On"))
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("效華給我記住 ><"))
         except:
             pass
     elif mtext == "@無線開關關閉":
@@ -173,7 +154,6 @@ def handle_message(event):
             #8/30 測試
             #Tapo_Function.closeTapo_temp() 
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 Off")) 
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("效華效華效華效華效華效華效華效華"))
         except:
             pass
     elif mtext == "@幫助":
@@ -182,7 +162,7 @@ def handle_message(event):
         若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
         若照片傳送結束請打 @@結束"))
     elif mtext == "@聯絡客服":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡 效華xDDDDDDDDDDDDDDDDDDDDDDDDDD"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡許孝華xDDDDDDDDDDDDDDDDDDDDDDDDDD"))
       
       
     ##push message
@@ -198,65 +178,14 @@ def handle_message(event):
 
 
 
-#################################################### 確定這段要不要           
-@handler.add(PostbackEvent)
-def handle_postback(event):
-    #content = "{}: {}".format(event.source.user_id, event.message.text)
-    #line_bot_api.reply_message(
-     #   event.reply_token,
-      #  TextSendMessage(text=content))
-
-    if event.postback.data == "不開冷氣":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("不開冷氣"))
-        jsonFile.modify_jsonFile(event.source.user_id, 'airConditioner', 'noAirConditioner')
-    elif event.postback.data == "開冷氣":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請問你冷氣要開幾度呢?", quick_reply=air_conditioner_tem.airConditionerTem_reply))
-        jsonFile.modify_jsonFile(event.source.user_id, 'airConditioner', 'yesAirConditioner')
-
-    #設定冷氣溫度
-    if event.postback.data.find("°C") >= 0:
-        print(event.postback.data + "temppppp")
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("okokokokokokkkkk"))
-        jsonFile.modify_jsonFile(event.source.user_id, 'airConditionerTemp', event.postback.data[:-2])
-        #set_airConditioner_tem() #設定冷氣溫度???
-##################################################################
 
 
 ## 處理照片
-'''
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    # 這邊要測會不會成功，因為handler沒有寫type = textmessage
-    #print("Handle: reply_token: " + event.reply_token + ", message: " + event.message.text)
-    if (event.message.type == "text"):
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("210"))
-        mtext_pic = event.message.text
-        str_pas2 = re.search("^@@照片",mtext_pic)
-        print(str_pas2)
-        str_pas3 = re.search("^@@結束",mtext_pic)
-        if str_pas2:
-            mtext_pic_temp = mtext_pic.split("片")
-            #line_bot_api.reply_message(event.reply_token, TextSendMessage("216"))
-            user_id_for_pic = event.source.user_id
-            store_path = mtext_pic_temp[1]+"_"+user_id_for_pic   # 測試這樣的命名能不能通過
-            f_pic = open('store_path.txt', 'w+')
-            f_pic.write(store_path)
-            f_pic.close()
-            
-            try:
-                os.mkdir(store_path)
-            except:
-                #pass
-                print("store_path fail")
-        if str_pas3:
-            # 傳訊號給辨識模型(再次訓練)或是call再次訓練的function
-            print("待完成")
-'''
+
                 
 @handler.add(MessageEvent)
 def handle_message(event):
     # 這邊要測會不會成功，因為handler沒有寫type = textmessage
-    #print("Handle: reply_token: " + event.reply_token + ", message: " + event.message.text)
     if (event.message.type == "image"):
         SendImage = line_bot_api.get_message_content(event.message.id)
         f_pic_read = open('store_path.txt','r')
