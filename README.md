@@ -21,3 +21,8 @@ The functions available to users :
  
 ## Function_merged
 A program that accomplishes the function which decides to turn on(off) the wireless switch when we detect users get home.
+
+
+
+## Test folder
+Some fuctions or code which are still in test stage.
