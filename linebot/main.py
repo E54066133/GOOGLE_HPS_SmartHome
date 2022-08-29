@@ -152,9 +152,9 @@ def handle_message(event):
             pass
     elif mtext == "@幫助":
         line_bot_api.reply_message(event.reply_token, TextSendMessage("您好! 歡迎使用本服務\n\
-        若要設定冷氣請打 @@冷氣+用戶名稱+要設定的溫度 ex.@@冷氣Mom26\n\
-        若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
-        若照片傳送結束請打 @@結束"))
+若要設定冷氣請打 @@冷氣+用戶名稱+要設定的溫度 ex.@@冷氣Mom26\n\
+若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
+若照片傳送結束請打 @@結束"))
     elif mtext == "@聯絡客服":
         line_bot_api.reply_message(event.reply_token, TextSendMessage("Plz, contact 孝華 XDDDDDDDDDDDDDDDDDDDDD"))
       
