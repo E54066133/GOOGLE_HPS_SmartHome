@@ -156,7 +156,7 @@ def handle_message(event):
         若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
         若照片傳送結束請打 @@結束"))
     elif mtext == "@聯絡客服":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("Plz, contact 許孝華 XDDDDDDDDDDDDDDDDDDDDD"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("Plz, contact Michelle XDDDDDDDDDDDDDDDDDDDDD"))
       
       
     ##push message
@@ -177,7 +177,6 @@ def handle_message(event):
 ## 處理照片                
 @handler.add(MessageEvent)
 def handle_message(event):
-    # 這邊要測會不會成功，因為handler沒有寫type = textmessage
     if (event.message.type == "image"):
         SendImage = line_bot_api.get_message_content(event.message.id)
         f_pic_read = open('store_path.txt','r')
