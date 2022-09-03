@@ -31,13 +31,10 @@ while True:
             temprature_set = int(f1[person_detected]["airConditionerTemp"])
             temprature_now = int(temprature_now)
             if temprature_now >= temprature_set :
-                if tapo_off :
-                    #Tapo_Function.openTapo_temp()
-                    print("開啟開關")
-                    tapo_off = False
+                #Tapo_Function.openTapo_temp()
+                print("開啟開關")
+                tapo_off = False
             else:
                 tapo_off = True
-        
-        time.sleep(1)
     except:
-        time.sleep(302)
+        time.sleep(1)
