@@ -12,10 +12,11 @@ from linebot.exceptions import (
 
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage, PostbackEvent, PostbackTemplateAction,
                             PostbackAction, ConfirmTemplate, TemplateSendMessage, ButtonsTemplate,MessageTemplateAction,URITemplateAction,
-                            CarouselTemplate, CarouselColumn, URIAction)
+                            CarouselTemplate, CarouselColumn, URIAction,ImageSendMessage)
 
 import jsonFile
-#import Tapo_Function
+import Tapo_Function
+import my_test_client
 import re
 from linebot.exceptions import LineBotApiError
 
@@ -60,7 +61,13 @@ def callback():
 
     return 'OK'
 
-
+def check_string(userID):
+    with open('userid_launch.txt') as temp_f:
+        data = temp_f.readlines()
+    for line in data:
+        if userID in line:
+            return True 
+    return False 
 
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -71,20 +78,34 @@ def handle_message(event):
     str_pas2 = re.search("^@@照片",mtext)
     str_pas3 = re.search("^@@結束",mtext)
     if str_pas2:
+        f_userid = open('userid_launch.txt', 'a')
+
+        if check_string(event.source.user_id):
+            print('True')
+        else:
+            f_userid.write(event.source.user_id + "\n")
+            print('False')
+        
+        f_userid.close()
+        
+        
         mtext_pic_temp = mtext.split("片")
         user_id_for_pic = event.source.user_id
         store_path = mtext_pic_temp[1]+"_"+user_id_for_pic   # 測試這樣的命名能不能通過
         f_pic = open('store_path.txt', 'w+')
         f_pic.write(store_path)
         f_pic.close()
+        
         try:
-            os.mkdir(store_path)
+            os.mkdir("retrain/"+store_path)
         except:
             pass
     if str_pas3:
         # 傳訊號給辨識模型(再次訓練)或是call再次訓練的function
-        print("待完成")
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("待完成"))
+        my_test_client.retrain()
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("Plz wait for 5 min"))
+        
+            
     if str_pas:
         user_name = mtext[4:-2]         # 用戶的名字
         user_temperature = mtext[-2:]   # 用戶希望設定的溫度
@@ -94,28 +115,37 @@ def handle_message(event):
         '''
         username_userID = user_name + "_" + event.source.user_id
         jsonFile.modify_jsonFile(username_userID, 'airConditionerTemp', user_temperature)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("設定完成"))   
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("設定完成"))
+    
     elif mtext == "@查看監視器影像":
         # https://ithelp.ithome.com.tw/articles/10198142?sc=iThelpR 作法參照這個網站
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("此功能暫未啟用"))
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage("此功能暫未啟用"))
+   #     try:  #先用測試圖片 #之後要去抓宇霈的照片網址
+        pic_http,pic_http_small = my_test_client.capture()
+        print("web site is: ",pic_http)
         '''
-        try:  #先用測試圖片 #之後要去抓宇霈的照片網址
-            message_reply_pic = {
-                "type": "image",
-                "originalContentUrl": "https://drive.google.com/file/d/1VNRMU0U_v8WJAwc1A4B8YXZTT8nQJ1SR/view?usp=sharing", 
-                "previewImageUrl": "https://drive.google.com/file/d/1VNRMU0U_v8WJAwc1A4B8YXZTT8nQJ1SR/view?usp=sharing"
-            }
-            line_bot_api.reply_message(event.reply_token, message_reply_pic)
-        except:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤"))
+        message_reply_pic = {
+            "type": "image",
+            "originalContentUrl": pic_http,
+            "previewImageUrl": pic_http
+        }
         '''
+        image_message = ImageSendMessage(
+            original_content_url = pic_http,
+            preview_image_url = pic_http_small
+            )
+        line_bot_api.reply_message(event.reply_token, image_message)
+    #    except:
+     #       line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤"))
     elif mtext == "@查看亮度":
         try:
             f = open('light_intensity.txt', 'r')
             light_now = f.readline()
             f.close()
             light_now = str(light_now)
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(light_now))            
+            light_now += "lx"
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(light_now))
+            
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@查看溫度":
@@ -124,7 +154,9 @@ def handle_message(event):
             temperature_now = f.readline()
             f.close()
             temperature_now = str(temperature_now)
+            temperature_now += "°C"
             line_bot_api.reply_message(event.reply_token, TextSendMessage(temperature_now))
+            
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@查看濕度":
@@ -133,20 +165,21 @@ def handle_message(event):
             moisture_now = f.readline()
             f.close()
             moisture_now = str(moisture_now)
+            moisture_now += "%"
             line_bot_api.reply_message(event.reply_token, TextSendMessage(moisture_now))
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("發生錯誤,請稍等5分鐘"))
     elif mtext == "@無線開關打開":
         try:
             #8/30 測試
-            #Tapo_Function.openTapo_temp()
+            Tapo_Function.openTapo_temp()
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 On"))
         except:
             pass
     elif mtext == "@無線開關關閉":
         try:
             #8/30 測試
-            #Tapo_Function.closeTapo_temp() 
+            Tapo_Function.closeTapo_temp() 
             line_bot_api.reply_message(event.reply_token, TextSendMessage("開關 Off")) 
         except:
             pass
@@ -156,7 +189,7 @@ def handle_message(event):
 若要設定照片資料請打 @@照片+用戶名稱,接著傳送10張自己的臉部照片(各種不同角度為佳)\n\
 若照片傳送結束請打 @@結束"))
     elif mtext == "@聯絡客服":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("Plz, contact 孝華 XDDDDDDDDDDDDDDDDDDDDD"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("請聯絡Hsiao-Hua HsuxDDDDDDDDDDDDDDDDDDDDDDDDDD"))
       
       
     ##push message
@@ -174,15 +207,18 @@ def handle_message(event):
 
 
 
-## 處理照片                
+## 處理照片
+
+                
 @handler.add(MessageEvent)
 def handle_message(event):
+    # 這邊要測會不會成功，因為handler沒有寫type = textmessage
     if (event.message.type == "image"):
         SendImage = line_bot_api.get_message_content(event.message.id)
         f_pic_read = open('store_path.txt','r')
         store_path = f_pic_read.readline()
         f_pic_read.close()
-        path = '/home/pig/linebot_ver2/' + store_path + "/" + event.message.id + '.png'      # 這邊要改path
+        path = '/home/pig/linebot_ver2/retrain/' + store_path + "/" + event.message.id + '.png'      # 這邊要改path
         with open(path, 'wb') as fd:
             for chenk in SendImage.iter_content():
                 fd.write(chenk)
@@ -197,6 +233,8 @@ def handle_message(event):
 
 ###main###
 if __name__ == "__main__":
+    global store_path
+    store_path = ""
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
     #app.run(debug=True)
