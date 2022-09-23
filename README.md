@@ -1,7 +1,7 @@
 # GOOGLE_HPS_SmartHome
-2022 Taiwan Google Hardware Sprint Team 9
 
 <div align = center>
+2022 Taiwan Google Hardware Sprint Team 9 WatchDog
 <img src = "https://github.com/E54066133/GOOGLE_HPS_SmartHome/blob/main/WatchDog_mindsets.png"/>
 </div>
 
