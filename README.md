@@ -20,7 +20,7 @@ The functions available to users :
 
  
 ## Function_merged
-Function_merged.py accomplishes the function which decides to turn on(off) the wireless switch when we detect users get home and send a warning message when we detect a stranger.
+Function_merged.py accomplishes the function which decides to turn on(off) the wireless switch when we detect users get home and sends a warning message when we detect a stranger.
 
 
 
