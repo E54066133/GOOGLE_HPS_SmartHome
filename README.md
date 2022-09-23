@@ -1,5 +1,6 @@
 # GOOGLE_HPS_SmartHome
 2022 Taiwan Google Hardware Sprint Team 9
+![image](https://github.com/E54066133/GOOGLE_HPS_SmartHome/blob/main/WatchDog_mindsets.png)
 
 ## Sensor Node
 Through the HC-08 bluetooth module, Arduino sends sensor data like temperature, relative moisture, and light intensity to Raspberry Pi. Then, Raspberry Pi saves sensor data as txt file, and controls the wireless Tapo P110 switches to open the home appliances automatically according to the data collected.           
