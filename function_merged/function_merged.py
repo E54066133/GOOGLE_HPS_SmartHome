@@ -12,7 +12,7 @@ from linebot import LineBotApi
 from linebot.models import TextSendMessage, ImageSendMessage
 from linebot.exceptions import LineBotApiError
 
-CHANNEL_ACCESS_TOKEN = "WlZ/ZsNlmmIaBZQS61pyn9RhO8Am619TI+XEOU64nafXLILC/jwcYfkn+xzLI4G1XaFgd0Q3GG1K4iYigZMwByVbUiIVMZCtpTA7nTTWttPP7zm0dC46moutA47iPlWe1UFa3sWzcrhiKP4mNeU1mAdB04t89/1O/w1cDnyilFU="
+CHANNEL_ACCESS_TOKEN = "iOjpAvuH3tsABVdaxxtGRh8zFPQ//RmiK1LDZzZX4KmM7QnlR2+N4tGDJZqPlGJv3EIBkZNZgrYTNkNr+wPGgXGusVgR7bWcTHuFF07bMGl5pI2BRU7b9CUu5U7jbefcAV+bw8dNEFOoEQJMqKXZpAdB04t89/1O/w1cDnyilFU="
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 
 while True:
