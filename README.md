@@ -1,4 +1,4 @@
-# GOOGLE_HPS_SmartHome
+# Google_HPS_SmartHome
 
 <div align = center>
 2022 Taiwan Google Hardware Sprint Team 9 WatchDog
